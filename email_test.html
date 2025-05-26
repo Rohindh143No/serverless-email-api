@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <title>Send Email Test</title>
+  <style>
+    /* Dark theme */
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    form {
+      background: #111;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 620px;
+      box-sizing: border-box;
+      box-shadow: 0 0 10px #222;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: normal;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    input[type="email"]:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #888;
+      background-color: #333;
+    }
+
+    /* Button styling */
+    button {
+      margin: 1rem auto 0 auto; 
+      width: auto;
+      padding: 0.5rem 2rem;
+      font-size: 1rem;
+      background-color: #000000; 
+      border: none;
+      border-radius: 0.5rem; 
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block; 
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    /* Error message */
+    #result {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #f44336; /* red */
+      min-height: 1.2rem;
+      text-align: center;
+    }
+
+    /* Success popup */
+    #successPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #111;
+      border: 2px solid #4caf50;
+      border-radius: 10px;
+      padding: 1.2rem 2rem;
+      color: #4caf50;
+      font-size: 1rem;
+      text-align: center;
+      box-shadow: 0 0 10px #4caf50;
+      z-index: 1000;
+      transition: transform 0.3s ease-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      width: 220px;
+    }
+
+    #successPopup.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    
+    #successPopup svg {
+      width: 36px;
+      height: 36px;
+      stroke: #4caf50;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      animation: checkmark 0.4s ease forwards;
+    }
+
+    @keyframes checkmark {
+      0% {
+        stroke-dashoffset: 48;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <form id="emailForm" novalidate>
+    <h1>Send Email Test</h1>
+    <label>
+      Receiver Email:
+      <input type="email" id="receiver_email" required />
+      <small class="error" id="emailError"></small>
+    </label>
+
+    <label>
+      Subject:
+      <input type="text" id="subject" required />
+      <small class="error" id="subjectError"></small>
+    </label>
+
+    <label>
+      Body:
+      <textarea id="body_text" rows="5" required></textarea>
+      <small class="error" id="bodyError"></small>
+    </label>
+
+    <button type="submit">Send Email</button>
+
+    <div id="result"></div>
+  </form>
+
+  <!-- Success popup -->
+  <div id="successPopup" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;">
+    <svg viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+    <div>Email sent successfully!</div>
+  </div>
+
+  <script>
+    // DOM elements
+    const form = document.getElementById('emailForm');
+    const resultDiv = document.getElementById('result');
+    const successPopup = document.getElementById('successPopup');
+
+    const emailInput = document.getElementById('receiver_email');
+    const subjectInput = document.getElementById('subject');
+    const bodyInput = document.getElementById('body_text');
+
+    const emailError = document.getElementById('emailError');
+    const subjectError = document.getElementById('subjectError');
+    const bodyError = document.getElementById('bodyError');
+
+    // Clear errors
+    function clearErrors() {
+      emailError.textContent = '';
+      subjectError.textContent = '';
+      bodyError.textContent = '';
+      resultDiv.textContent = '';
+      resultDiv.style.color = '#f44336'; // red color
+    }
+
+    // Validate form
+    function validateForm() {
+      let valid = true;
+      clearErrors();
+
+      if (!emailInput.value) {
+        emailError.textContent = 'Receiver email is required.';
+        valid = false;
+      } else if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
+        emailError.textContent = 'Please enter a valid email.';
+        valid = false;
+      }
+
+      if (!subjectInput.value.trim()) {
+        subjectError.textContent = 'Subject is required.';
+        valid = false;
+      }
+
+      if (!bodyInput.value.trim()) {
+        bodyError.textContent = 'Body is required.';
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    // Show success popup
+    function showSuccessPopup() {
+      successPopup.style.display = 'flex';
+      setTimeout(() => {
+        successPopup.classList.add('show');
+      }, 10);
+
+      setTimeout(() => {
+        successPopup.classList.remove('show');
+        setTimeout(() => {
+          successPopup.style.display = 'none';
+        }, 300);
+      }, 3000);
+    }
+
+    // Form submit event
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validate inputs
+      if (!validateForm()) {
+        return;
+      }
+
+      clearErrors(); // clear previous messages
+
+      const data = {
+        receiver_email: emailInput.value.trim(),
+        subject: subjectInput.value.trim(),
+        body_text: bodyInput.value.trim(),
+      };
+
+      try {
+        // API call
+        const response = await fetch('http://localhost:3000/dev/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const json = await response.json();
+
+        if (response.ok) {
+          showSuccessPopup();
+          form.reset();
+          resultDiv.textContent = '';
+        } else {
+          // Show error with HTTP code
+          const errorMsg = json.error || 'An error occurred';
+          resultDiv.textContent = `Error ${response.status}: ${errorMsg}`;
+        }
+      } catch (err) {
+        // Network error
+        resultDiv.textContent = '(500)Network or server error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

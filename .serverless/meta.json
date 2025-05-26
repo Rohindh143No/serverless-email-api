@@ -1,0 +1,55 @@
+{
+  "C:\\ROHINDH_K\\FINALTASK\\email-api\\serverless.yml": {
+    "versionFramework": "4.14.4",
+    "servicePath": "C:\\ROHINDH_K\\FINALTASK\\email-api\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "email-api",
+      "frameworkVersion": "4.14.4",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.9",
+        "stage": "dev",
+        "region": "us-east-1"
+      },
+      "functions": {
+        "sendEmail": {
+          "handler": "handler.send_email",
+          "events": [
+            {
+              "http": {
+                "path": "send-email",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ]
+        }
+      },
+      "plugins": [
+        "serverless-offline"
+      ]
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.9",
+      "stage": "dev",
+      "region": "us-east-1"
+    },
+    "error": {
+      "message": "request to https://core.serverless.com/api/bff/ failed, reason: getaddrinfo ENOTFOUND core.serverless.com",
+      "stack": "Error: request to https://core.serverless.com/api/bff/ failed, reason: getaddrinfo ENOTFOUND core.serverless.com\n    at Authentication.getClientDataFromAccessKey (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:694:18481)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Authentication.getAuthenticatedData (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:694:3689)\n    at async Authentication.authenticate (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:694:21968)\n    at async TraditionalRunner.resolveVariablesAndAuthenticate (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:698:2377)\n    at async TraditionalRunner.run (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:1271:27896)\n    at async route (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:1302:2779)\n    at async Object.run (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:1303:3661)\n    at async run2 (file:///C:/Users/vismaya/.serverless/releases/4.14.4/package/dist/sf-core.js:1303:4815)"
+    },
+    "serviceRawFile": "service: email-api\r\n\r\nframeworkVersion: '4.14.4'\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.9\r\n  stage: dev\r\n  region: us-east-1\r\n\r\nfunctions:\r\n  sendEmail:\r\n    handler: handler.send_email\r\n    events:\r\n      - http:\r\n          path: send-email\r\n          method: post\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-offline\r\n",
+    "command": [
+      "offline",
+      "start"
+    ],
+    "options": {},
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
